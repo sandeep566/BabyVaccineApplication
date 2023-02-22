@@ -1,0 +1,111 @@
+.vaccines-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.vaccines-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 4rem;
+  margin-top: 2rem;
+}
+
+.vaccine-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 1rem;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.vaccine-card h2 {
+  font-size: 1.5rem;
+}
+
+.vaccine-card p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin-bottom: -1rem;
+}
+
+.vaccine-card .vaccine-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.vaccine-card button {
+  padding: 0.5rem 1rem;
+  background-color: #5EB95E;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.vaccine-card button:hover {
+  color: white;
+  transition: background-color 300ms;
+  background-color: #78bc78;
+}
+
+@media (max-width: 767px) {
+  .vaccines-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* Style for "Update" button */
+.btn-success {
+  background-color: #5EB95E;
+  color: #fff;
+  border-color: #36393f;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  color: white;
+  transition: background-color 300ms;
+  background-color: #78bc78;
+}
+
+/* Style for "Delete" button */
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border-color: #d41e30;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.custom-popup {
+  background-color: #f7f7f7;
+  border: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  padding: 20;
+}
+#popText{
+  color: #f7f7f7;
+}
