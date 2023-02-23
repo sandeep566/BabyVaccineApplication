@@ -48,7 +48,7 @@ function ChildUpdate() {
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">Update Customer Details</h2>
+          <h2 className="text-center m-4">Update Child Details</h2>
           <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="vaccineName" className="form-label">

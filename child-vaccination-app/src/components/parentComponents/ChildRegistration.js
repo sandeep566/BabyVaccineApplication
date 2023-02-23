@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/AddVaccine.css"; // import the CSS file
 import NavbarCustomer from "../../layout/NavbarCustomer";
 
+
 function ChildRegistration() {
   const obj = localStorage.getItem("userInfo");
   const { userName } = JSON.parse(obj);
-
   const [child, setChild] = useState({
     name: "",
     weight: 0,
@@ -16,32 +16,54 @@ function ChildRegistration() {
   });
 
   const{name,weight,age,gender} = child;
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const onInputChange = (e) => {
-    setChild(({ ...child, [e.target.name]: e.target.value }));
-  };
+    setChild({ ...child, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+};
+const validateForm = () => {
+        let isValid = true;
+        const errors = {};
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      await axios.post(
-        `http://localhost:8585/child/insertChild/${userName}`,
-        child
-      );
+        if (!child.name) {
+            errors.name = "Child Name is required";
+            isValid = false;
+        }
+
+        if (!child.age) {
+            errors.age = "Child Age Should be less than 60 months";
+            isValid = false;
+        }
+
+        if (!child.weight || child.weight < 0) {
+            errors.weight = "weight should not be less than 0";
+            isValid = false;
+        }
+        if (!child.gender) {
+          errors.gender = "Child Gender is required";
+          isValid = false;
+      }
+        setErrors(errors);
+        return isValid;
+    };
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+          await axios.post(
+          `http://localhost:8585/child/insertChild/${userName}`,
+          child
+        );
       alert("Child details added successfully");
       setChild({
         name: "",
         weight: 0,
         age: 0,
         gender: "",
-    });
-      console.log(child);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+    }); 
+  }     
+    };
   return (
     <>
       <NavbarCustomer />
@@ -53,7 +75,7 @@ function ChildRegistration() {
       </button>
       <div className="add-vaccine container">
         <div className="row">
-          <div className="col-md-12 offset-md-1 border rounded p-4 mt-2 shadow" style = {{'backgroundColor': "white"}}>
+          <div className="col-md-12 offset-md-1 border rounded p-4 mt-2 shadow" style={{backgroundColor:'white'}}>
             <h2>Child Registration</h2>
             <form onSubmit={(e) => onSubmit(e)}>
               <div className="form-group">
@@ -67,7 +89,10 @@ function ChildRegistration() {
                   name="name"
                   value={name}
                   onChange={(e) => onInputChange(e)}
-                />
+                  />
+                  {errors.name && (
+                                    <span className="error">{errors.name}</span>
+                                )}
               </div>
               <div className="form-group">
                 <label htmlFor="age" className="form-label">
@@ -75,12 +100,18 @@ function ChildRegistration() {
                 </label>
                 <input
                   type="number"
+                  step={"any"}
+                  min={"0"}
+                  max={"60"}
                   className="form-control"
                   placeholder="Enter age"
                   name="age"
                   value={age}
                   onChange={(e) => onInputChange(e)}
                 />
+                {errors.age && (
+                                    <span className="error">{errors.age}</span>
+                                )}
               </div>
               <div className="form-group">
                 <label htmlFor="gender" className="form-label">
@@ -92,10 +123,12 @@ function ChildRegistration() {
                     className="form-check-input"
                     name="gender"
                     value="Male"
-                    checked={child.gender == "Male"}
+                    checked={child.gender === "Male"}
                     onChange={(e) => onInputChange(e)}
                   />
+                  
                   <label className="form-check-label">Male</label>
+                  
                 </div>
                 <div className="form-check">
                   <input
@@ -103,12 +136,18 @@ function ChildRegistration() {
                     className="form-check-input"
                     name="gender"
                     value="Female"
-                    checked={child.gender == "Female"}
+                    checked={child.gender === "Female"}
                     onChange={(e) => onInputChange(e)}
                   />
+                  
                   <label className="form-check-label">Female</label>
-                </div>
+                  
+                </div> 
+                {errors.gender && (
+                                    <span className="error">{errors.gender}</span>
+                                )}  
               </div>
+              
               <div className="form-group">
                 <label htmlFor="weight" className="form-label">
                   WEIGHT
@@ -117,13 +156,16 @@ function ChildRegistration() {
                   type="number"
                   step={"any"}
                   min={"0"}
-                  max={"100"}
+                  max={"40"}
                   className="form-control"
                   placeholder="Enter weight"
                   name="weight"
                   value={weight}
                   onChange={(e) => onInputChange(e)}
                 />
+                {errors.weight && (
+                                    <span className="error">{errors.weight}</span>
+                                )}
               </div>
               <div className="text-center">
                 <button type="submit" className="btn btn-primary me-2">

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import NavbarAdmin from "../../layout/NavbarAdmin";
 
-function EditHospital() {
+function UpdateVaccine() {
   const [vaccine, setVaccine] = useState({
     vaccineName: "",
     vaccineDescription: "",
@@ -129,4 +129,4 @@ function EditHospital() {
   );
 }
 
-export default EditHospital;
+export default UpdateVaccine;

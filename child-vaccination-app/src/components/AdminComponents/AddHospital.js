@@ -19,33 +19,46 @@ function AddHospital() {
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
-    let errorMsg = "";
+    setErrors({ ...errors, [e.target.name]: "" });
 
-    if (!value) {
-      errorMsg = `${name} is required`;
-    } else if (name === "hospitalName" && value.length < 3) {
-      errorMsg = "Hospital name must be at least 3 characters long";
-    } else if (name === "startingTime" && value >= hospital.endingTime) {
-      errorMsg = "Starting time must be before ending time";
-    } else if (name === "endingTime" && value <= hospital.startingTime) {
-      errorMsg = "Ending time must be after starting time";
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: errorMsg,
-    }));
-
-    setHospital((prevHospital) => ({
+  setHospital((prevHospital) => ({
       ...prevHospital,
       [name]: value,
     }));
   };
-
-  const onSubmit = async (e) => {
+const validate = () => {
+    let isValid=true;
+    const errors = {};
+    if (!hospital.hospitalName) {
+      errors.hospitalName = "Hospital name is required";
+    } 
+    else if (hospital.hospitalName.length < 3) {
+      errors.hospitalName = "Hospital name must be at least 3 characters long";
+      isValid=false;
+    }
+    if (!hospital.hospitalAddress) {
+      errors.hospitalAddress = "Hospital address is required";
+      isValid=false;
+    }
+    if (!hospital.startingTime) {
+      errors.startingTime = "Starting time is required";
+      isValid=false;
+    }
+    if (!hospital.endingTime) {
+      errors.endingTime = "Ending time is required";
+    } else if (hospital.startingTime >= hospital.endingTime) {
+      errors.startingTime = "Starting time must be before ending time";
+      errors.endingTime = "Ending time must be after starting time";
+      isValid=false;
+    }
+    setErrors(errors);
+    return isValid;
+  };
+const onSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length === 0) {
+    if(validate()){
+
+    
       try {
         await axios.post(
           "http://localhost:8585/Hospital/insertHospital",
@@ -56,34 +69,9 @@ function AddHospital() {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      setErrors(validationErrors);
     }
   };
-
-  const validate = () => {
-    const errors = {};
-    if (!hospital.hospitalName) {
-      errors.hospitalName = "Hospital name is required";
-    } else if (hospital.hospitalName.length < 3) {
-      errors.hospitalName = "Hospital name must be at least 3 characters long";
-    }
-    if (!hospital.hospitalAddress) {
-      errors.hospitalAddress = "Hospital address is required";
-    }
-    if (!hospital.startingTime) {
-      errors.startingTime = "Starting time is required";
-    }
-    if (!hospital.endingTime) {
-      errors.endingTime = "Ending time is required";
-    } else if (hospital.startingTime >= hospital.endingTime) {
-      errors.startingTime = "Starting time must be before ending time";
-      errors.endingTime = "Ending time must be after starting time";
-    }
-    return errors;
-  };
-
-  return (
+return (
     <>
       <NavbarAdmin />
       <div className="add-vaccine">
@@ -99,6 +87,7 @@ function AddHospital() {
                   name="hospitalName"
                   value={hospital.hospitalName}
                   onChange={onInputChange}
+                  onBlur={validate}
                 />
                 {errors.hospitalName && (
                   <div className="error">{errors.hospitalName}</div>
@@ -112,6 +101,7 @@ function AddHospital() {
                   name="hospitalAddress"
                   value={hospital.hospitalAddress}
                   onChange={onInputChange}
+                  onBlur={validate}
                 />
                 {errors.hospitalAddress && (
                   <div className="error">{errors.hospitalAddress}</div>
@@ -125,6 +115,7 @@ function AddHospital() {
                   name="startingTime"
                   value={hospital.startingTime}
                   onChange={onInputChange}
+                  onBlur={validate}
                 />
                 {errors.startingTime && (
                   <div className="error">{errors.startingTime}</div>
@@ -138,6 +129,7 @@ function AddHospital() {
                   name="endingTime"
                   value={hospital.endingTime}
                   onChange={onInputChange}
+                  onBlur={validate}
                   />
                 {errors.endingTime && (
                   <div className="error">{errors.endingTime}</div>

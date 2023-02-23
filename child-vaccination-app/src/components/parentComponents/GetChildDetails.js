@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/Bookings.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import NavbarCustomer from '../../layout/NavbarCustomer';
 
 function GetChildDetails() {
   const [children, setChildren] = useState([]);
 
-  const navigate = useNavigate();
   const obj = localStorage.getItem("userInfo")
   const {userName} = JSON.parse(obj);
 
